@@ -15,7 +15,6 @@ type Configuration struct {
 	MqttPassword  string
 	BasicAuthUser string
 	BasicAuthPass string
-	GINPORT       string
 }
 
 type Container struct {
@@ -74,12 +73,6 @@ func main() {
 					Usage:  "Basic Authentication Password",
 					EnvVar: "AUTH_PASSWORD",
 				},
-				cli.StringFlag{
-					Name:   "port",
-					Value:  ":80",
-					Usage:  "Gin Default binding Port",
-					EnvVar: "PORT",
-				},
 			},
 			Action: func(c *cli.Context) error {
 				// Fills the Configuration
@@ -106,7 +99,6 @@ func InitializeContainer(c *cli.Context) *Container {
 		MqttPassword:  c.String("mqtt-pass"),
 		BasicAuthUser: c.String("username"),
 		BasicAuthPass: c.String("password"),
-		GINPORT:       c.String("port"),
 	}
 	return container
 }
@@ -119,7 +111,7 @@ func Setup(container *Container) {
 	r := SetupGin(container)
 	
 	// Run Gin Server
-	r.Run(container.Config.GINPORT)
+	r.Run(":80")
 }
 
 func SetupMQTT(container *Container) {
