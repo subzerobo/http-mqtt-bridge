@@ -143,6 +143,11 @@ func SetupGin(container *Container) *gin.Engine {
 		c.String(http.StatusOK, "pong")
 	})
 	
+	// Ping Test
+	r.GET("/", func(c *gin.Context) {
+		c.String(http.StatusOK, "i am ready !")
+	})
+	
 	authorized := r.Group("/", gin.BasicAuth(gin.Accounts{
 		container.Config.BasicAuthUser: container.Config.BasicAuthPass, // user:foo password:bar
 	}))
