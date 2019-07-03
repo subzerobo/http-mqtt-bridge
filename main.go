@@ -11,19 +11,23 @@ import (
 
 type Configuration struct {
 	MqttServerURL string
+	MqttUsername  string
+	MqttPassword  string
+	BasicAuthUser string
+	BasicAuthPass string
 }
 
 type Container struct {
-	Config Configuration
+	Config     Configuration
 	MqttClient mqtt.Client
 }
 
 type PublishDTO struct {
-	Topic string `json="topic" binding:"required"`
+	Topic   string `json="topic" binding:"required"`
 	Message string `json="message" binding:"required"`
 }
 
-func main()  {
+func main() {
 	
 	app := cli.NewApp()
 	app.Name = "HTTP-MQTT Bridge"
@@ -33,17 +37,43 @@ func main()  {
 		return nil
 	}
 	
-	app.Commands = []cli.Command {
+	app.Commands = []cli.Command{
 		{
-			Name: "start",
+			Name:    "start",
 			Aliases: []string{"s"},
-			Usage: "starts the server",
-			Flags: []cli.Flag {
+			Usage:   "starts the server",
+			Flags: []cli.Flag{
 				cli.StringFlag{
-					Name: "mqtt, m",
-					Value : "tcp://localhost:1883",
-					Usage : "MQTT Server Address",
+					Name:   "mqtt-host, mh",
+					Value:  "tcp://localhost:1883",
+					Usage:  "MQTT Host Address",
+					EnvVar: "MQTT_HOST",
 				},
+				cli.StringFlag{
+					Name:   "mqtt-user,mu",
+					Value:  "",
+					Usage:  "MQTT Host Username",
+					EnvVar: "MQTT_USER",
+				},
+				cli.StringFlag{
+					Name:   "mqtt-pass,mp",
+					Value:  "",
+					Usage:  "MQTT Host Password",
+					EnvVar: "MQTT_PASS",
+				},
+				cli.StringFlag{
+					Name:   "username,u",
+					Value:  "alikaviani",
+					Usage:  "Basic Authentication Username",
+					EnvVar: "AUTH_USERNAME",
+				},
+				cli.StringFlag{
+					Name:   "password,p",
+					Value:  "F#@{fW+/",
+					Usage:  "Basic Authentication Password",
+					EnvVar: "AUTH_PASSWORD",
+				},
+				
 			},
 			Action: func(c *cli.Context) error {
 				// Fills the Configuration
@@ -65,12 +95,16 @@ func main()  {
 func InitializeContainer(c *cli.Context) *Container {
 	container := new(Container)
 	container.Config = Configuration{
-		MqttServerURL: c.String("mqtt"),
+		MqttServerURL: c.String("mqtt-host"),
+		MqttUsername:  c.String("mqtt-user"),
+		MqttPassword:  c.String("mqtt-pass"),
+		BasicAuthUser: c.String("username"),
+		BasicAuthPass: c.String("password"),
 	}
 	return container
 }
 
-func Setup(container *Container)  {
+func Setup(container *Container) {
 	// Connect to MQTT Client
 	SetupMQTT(container)
 	
@@ -83,14 +117,18 @@ func Setup(container *Container)  {
 
 func SetupMQTT(container *Container) {
 	opts := mqtt.NewClientOptions().AddBroker(container.Config.MqttServerURL)
+	if container.Config.MqttUsername != "" {
+		opts.Username = container.Config.MqttUsername
+		opts.Password = container.Config.MqttPassword
+	}
 	client := mqtt.NewClient(opts)
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
-		log.Fatal(token.Error())
+		log.Fatal("MQTT Error: ",token.Error())
 	}
 	container.MqttClient = client
 }
 
-func SetupGin(container *Container) *gin.Engine  {
+func SetupGin(container *Container) *gin.Engine {
 	r := gin.Default()
 	
 	// Ping Test
@@ -99,7 +137,7 @@ func SetupGin(container *Container) *gin.Engine  {
 	})
 	
 	authorized := r.Group("/", gin.BasicAuth(gin.Accounts{
-		"alikaviani":  "F#@{fW+/", // user:foo password:bar
+		container.Config.BasicAuthUser: container.Config.BasicAuthPass, // user:foo password:bar
 	}))
 	
 	// Post To Topic
@@ -110,7 +148,7 @@ func SetupGin(container *Container) *gin.Engine  {
 		}
 		// Go For MQTT Publish
 		client := container.MqttClient
-		if token := client.Publish(publishDTO.Topic,0,false, publishDTO.Message); token.Wait() && token.Error() != nil {
+		if token := client.Publish(publishDTO.Topic, 0, false, publishDTO.Message); token.Wait() && token.Error() != nil {
 			log.Println("Error:", token.Error())
 			c.JSON(http.StatusFailedDependency, gin.H{"status": "error", "error": token.Error()})
 		}

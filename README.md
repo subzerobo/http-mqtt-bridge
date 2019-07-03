@@ -12,7 +12,19 @@ This app could be hosted on Heroku
 * `cd http-mqtt-bridge`
 * `go get ./...`
 * `go build -o hmb`
-* `hmb s -mqtt=tcp://localhost:1883`
+* `hmb s --mqtt-host=tcp://localhost:1883`
+
+###CLI Help
+* `hmb s --help`
+
+###Configuration Environment Variables
+
+* MQTT Host : `MQTT_HOST`
+* MQTT User : `MQTT_USER`
+* MQTT Pass : `MQTT_PASS`
+
+* Basic Auth Username : `AUTH_USERNAME`
+* Basic Auth Password : `AUTH_PASSWORD`
 
 ###Test
 
