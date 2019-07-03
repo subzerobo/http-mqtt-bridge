@@ -33,5 +33,18 @@ This app could be hosted on Heroku
 This will publish message: `this is a test message` to the topic : `ali`
 
 
+### Deploying to Heroku
 
- 
+You can add required environment variable through .env File accordingly or after creating the heroku app 
+Navigate to your app then go to Settings -> Config Vars -> Add Environment variables
+
+```
+$ git clone git@github.com:subzerobo/http-mqtt-bridge.git
+$ cd  http-mqtt-bridge
+$ heroku create
+$ git push heroku master
+$ heroku open
+```
+  OR
+  
+ [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
