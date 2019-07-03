@@ -1,1 +1,1 @@
-web: bin/hmb
+web: bin/http-mqtt-bridge start
