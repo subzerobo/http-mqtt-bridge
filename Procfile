@@ -1,1 +1,1 @@
-web: hmb
+web: bin/hmb
