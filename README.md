@@ -6,7 +6,7 @@
 The HTTP to MQTT bridge should feel that gap of IFTTT Actions for your Custom IoT Hardwares.  
 The idea is to receive signals using HTTP requests and transfer them to your MQTT broker. The HTTP to MQTT bridge is written using Golang with Gin for HTTP server and Paho MQTT client.  
   
-### Usage ###
+## Usage ##
 This app could be hosted on Heroku  
   
 ### Running on Local Machine ###

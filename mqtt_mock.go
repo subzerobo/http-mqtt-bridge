@@ -161,7 +161,7 @@ func (m *mockClient) SubscribeMultiple(topics map[string]byte, h mqtt.MessageHan
 		return nil
 	}
 	
-	for topic, _ := range topics {
+	for topic := range topics {
 		m.subs[topic] = append(m.subs[topic], h)
 	}
 	
