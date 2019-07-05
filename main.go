@@ -24,8 +24,8 @@ type Container struct {
 }
 
 type PublishDTO struct {
-	Topic   string `json="topic" binding:"required"`
-	Message string `json="message" binding:"required"`
+	Topic   string `binding:"required" json:"topic"`
+	Message string `binding:"required" json:"message"`
 }
 
 func main() {
@@ -155,14 +155,18 @@ func SetupGin(container *Container) *gin.Engine {
 	// Post To Topic
 	authorized.POST("publish", func(c *gin.Context) {
 		var publishDTO PublishDTO
-		if err := c.BindJSON(&publishDTO); err != nil {
+		// Validate Payloadd
+		if err := c.ShouldBindJSON(&publishDTO); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": err.Error()})
+			return
 		}
 		// Go For MQTT Publish
 		client := container.MqttClient
-		if token := client.Publish(publishDTO.Topic, 0, false, publishDTO.Message); token.Wait() && token.Error() != nil {
+		if token := client.Publish(publishDTO.Topic, 0, false, publishDTO.Message); token.Error() != nil {
+			// Return Error
 			log.Println("Error:", token.Error())
 			c.JSON(http.StatusFailedDependency, gin.H{"status": "error", "error": token.Error()})
+			return
 		}
 		c.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
