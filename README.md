@@ -1,6 +1,7 @@
 # Http-MQTT-Bridge
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) 
+[![Build Status](https://travis-ci.org/subzerobo/http-mqtt-bridge.svg?branch=master)](https://travis-ci.org/subzerobo/http-mqtt-bridge)
 
 The HTTP to MQTT bridge should feel that gap of IFTTT Actions for your Custom IoT Hardwares.
 The idea is to receive signals using HTTP requests and transfer them to your MQTT broker. The HTTP to MQTT bridge is written using Golang with Gin for HTTP server and Paho MQTT client.
