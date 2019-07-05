@@ -11,21 +11,22 @@ This app could be hosted on Heroku
   
 ### Running on Local Machine ###
   
-* Clone the Project `git clone git@github.com:subzerobo/http-mqtt-bridge.git` * `cd http-mqtt-bridge`  
-* `go get ./...`  
-* `go build -o hmb`  
-* `hmb s --mqtt-host=tcp://localhost:1883`  
+*   `git clone git@github.com:subzerobo/http-mqtt-bridge.git` 
+*   `cd http-mqtt-bridge`  
+*   `go get ./...`  
+*   `go build -o hmb`  
+*   `hmb s --mqtt-host=tcp://localhost:1883`  
   
 ### CLI Help ###
-* `hmb s --help`  
+*   `hmb s --help`  
   
 ### Configuration Environment Variables ###
   
-* MQTT Host : `MQTT_HOST`   
-* MQTT User : `MQTT_USER`   
-* MQTT Pass : `MQTT_PASS`      
-* Basic Auth Username : `AUTH_USERNAME`   
-* Basic AuthPassword : `AUTH_PASSWORD`
+*   MQTT Host : `MQTT_HOST`   
+*   MQTT User : `MQTT_USER`   
+*   MQTT Pass : `MQTT_PASS`      
+*   Basic Auth Username : `AUTH_USERNAME`   
+*   Basic AuthPassword : `AUTH_PASSWORD`
   
 ### Test ###
   
@@ -38,12 +39,12 @@ This will publish message: `this is a test message` to the topic : `ali`
 You can add required environment variable through .env File accordingly or after creating the heroku app   
 Navigate to your app then go to Settings -> Config Vars -> Add Environment variables  
   
-```  
-$ git clone git@github.com:subzerobo/http-mqtt-bridge.git  
-$ cd  http-mqtt-bridge  
-$ heroku create  
-$ git push heroku master  
-$ heroku open  
+```bash  
+git clone git@github.com:subzerobo/http-mqtt-bridge.git  
+cd  http-mqtt-bridge  
+heroku create  
+git push heroku master  
+heroku open  
 ```  
   OR  
     
