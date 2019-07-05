@@ -9,6 +9,7 @@ import (
 	"os"
 )
 
+// Configuration Structure to Hold the Config Values
 type Configuration struct {
 	MqttServerURL string
 	MqttUsername  string
@@ -18,11 +19,13 @@ type Configuration struct {
 	GinPort       string
 }
 
+// Container Structure to Hold both Config and MQTTClient
 type Container struct {
 	Config     Configuration
 	MqttClient mqtt.Client
 }
 
+// PublishDTO is the sample data transfer object for publish http route
 type PublishDTO struct {
 	Topic   string `binding:"required" json:"topic"`
 	Message string `binding:"required" json:"message"`
@@ -98,6 +101,7 @@ func main() {
 	
 }
 
+// InitializeContainer Create the container with provided cli config values
 func InitializeContainer(c *cli.Context) *Container {
 	container := new(Container)
 	container.Config = Configuration{
@@ -111,6 +115,7 @@ func InitializeContainer(c *cli.Context) *Container {
 	return container
 }
 
+// Setup Wraps the Whole Setup Process
 func Setup(container *Container) {
 	// Connect to MQTT Client
 	SetupMQTT(container)
@@ -122,6 +127,7 @@ func Setup(container *Container) {
 	r.Run(":" + container.Config.GinPort)
 }
 
+// SetupMQTT Creates the MQTT Connection and stores it in Container
 func SetupMQTT(container *Container) {
 	opts := mqtt.NewClientOptions().AddBroker(container.Config.MqttServerURL)
 	if container.Config.MqttUsername != "" {
@@ -135,6 +141,7 @@ func SetupMQTT(container *Container) {
 	container.MqttClient = client
 }
 
+// SetupGin Creates the Gin Router
 func SetupGin(container *Container) *gin.Engine {
 	r := gin.Default()
 	
