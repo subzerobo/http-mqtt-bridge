@@ -1,5 +1,6 @@
 # Http-MQTT-Bridge  
   
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/fb288a8d7dbd4ab9b8ca5d02657fd972)](https://app.codacy.com/app/subzerobo/http-mqtt-bridge?utm_source=github.com&utm_medium=referral&utm_content=subzerobo/http-mqtt-bridge&utm_campaign=Badge_Grade_Dashboard)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)   [![Build Status](https://travis-ci.org/subzerobo/http-mqtt-bridge.svg?branch=master)](https://travis-ci.org/subzerobo/http-mqtt-bridge)  [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/subzerobo/http-mqtt-bridge/issues)  
   
   
